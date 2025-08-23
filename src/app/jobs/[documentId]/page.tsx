@@ -1,43 +1,63 @@
+'use client';
+
+import moment from 'moment';
+import { useParams } from 'next/navigation';
 import JobDetailsPage from '@/components/JobDetailsPage';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useJob } from '@/hooks/useJobs';
+import type { Job } from '@/types/job';
 
 const JobDetails = () => {
+  const { documentId } = useParams();
+  const { data, isLoading, error } = useJob(documentId as string);
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto grid h-[80vh] max-w-7xl grid-cols-1 gap-8 px-4 py-8 lg:grid-cols-3">
+        {/* Main Content Area */}
+        <Skeleton className="mx-auto h-full w-full rounded-xl border border-gray-200 p-6 shadow-md md:p-8 lg:col-span-2" />
+
+        {/* Sidebar Area */}
+        <div className="flex flex-col gap-8 lg:col-span-1">
+          <Skeleton className="mx-auto h-full w-full rounded-xl border border-gray-200 shadow-md" />
+
+          <Skeleton className="mx-auto h-full w-full rounded-xl border border-gray-200 shadow-md" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="mx-auto max-w-7xl px-4 py-8">Error loading job.</p>;
+  }
+
+  const job = data?.data as Job;
+
   const exampleJobDetails = {
-    companyLogoUrl: 'https://placehold.co/64x64/0047AB/FFFFFF.png?text=G',
-    jobTitle: 'Full Stack Developer',
-    companyName: 'GlobalTech Solutions',
-    salaryRange: '90k - 120k USD/year',
+    documentId: job?.documentId,
+    companyLogoUrl: job?.company?.logo
+      ? process.env.NEXT_PUBLIC_API_URL + job?.company?.logo?.url
+      : 'https://placehold.co/64x64/0047AB/FFFFFF.png?text=G',
+    jobTitle: job?.jobTitle,
+    companyName: job?.company?.companyName,
+    companyDocumentId: job?.company?.documentId,
+    salaryRange: job?.salaryRange,
     jobAttributes: {
-      isRemote: true,
-      jobType: 'Full-time',
+      isRemote: job?.workplace === 'Remote',
+      jobType: job?.jobType,
     },
-    benefits: [
-      'Health, Dental, and Vision Insurance',
-      '401(k) with company match',
-      'Generous Paid Time Off and Holidays',
-      'Professional Development Stipend',
-    ],
-    aboutRole: [
-      "Join our innovative development team to build scalable web applications and services using the latest technologies. You'll collaborate with cross-functional teams to design, develop, and deliver features that enhance user experience.",
-      'We value creativity, code quality, and continuous learning. Ideal candidates are passionate about problem-solving and eager to grow their skills in a dynamic environment.',
-    ],
-    whatWeDo: [
-      'Develop and maintain web applications with React and Node.js',
-      'Implement RESTful APIs and database design',
-      'Collaborate with UI/UX designers and product managers',
-      'Write automated tests and perform code reviews',
-      'Participate in agile ceremonies and sprint planning',
-    ],
-    waysToWork: [
-      'On-site: Work from our headquarters in San Francisco, CA',
-      'Hybrid: Flexible remote and in-office schedule',
-    ],
+    benefits: job?.benefits?.map((item: { text: string }) => item.text) || [],
+    aboutRole: job?.aboutRole?.map((item: { text: string }) => item.text) || [],
+    whatWeDo: job?.whatWeDo?.map((item: { text: string }) => item.text) || [],
+    waysToWork:
+      job?.waysToWork?.map((item: { text: string }) => item.text) || [],
     sidebarDetails: {
-      tag: 'Mid level',
-      workplace: 'On-site',
-      jobType: 'Full-time',
-      pay: '90k - 120k USD/year',
-      publishedDate: 'Jul 20, 2025',
-      companyWebsite: 'globaltechsolutions.com/',
+      tag: job?.seniority,
+      workplace: job?.workplace,
+      jobType: job?.jobType,
+      pay: job?.salaryRange,
+      publishedDate: moment(job?.createdAt).format('MMM D, YYYY'),
+      companyWebsite: job?.company?.companyWebsite,
     },
   };
 

@@ -11,9 +11,12 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
 type JobDetailsPageProps = {
+  documentId: string;
+  companyDocumentId: string;
   companyLogoUrl?: string; // Optional URL for the company logo
   jobTitle: string;
   companyName: string;
@@ -37,6 +40,8 @@ type JobDetailsPageProps = {
 };
 
 const JobDetailsPage = ({
+  documentId,
+  companyDocumentId,
   companyLogoUrl,
   jobTitle,
   companyName,
@@ -47,6 +52,31 @@ const JobDetailsPage = ({
   waysToWork,
   sidebarDetails,
 }: JobDetailsPageProps) => {
+  const jobUrl = `${window.location.origin}/jobs/${documentId}`;
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      // Mobile / supported browsers
+      try {
+        await navigator.share({
+          title: jobTitle,
+          url: jobUrl,
+        });
+        toast.success('Job shared successfully!');
+      } catch {
+        toast.error('Failed to share job.');
+      }
+    } else {
+      // Desktop fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(jobUrl);
+        toast.success('Job link copied to clipboard!');
+      } catch {
+        toast.error('Failed to copy job link.');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8 font-sans">
       <div className="container mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-3">
@@ -77,6 +107,7 @@ const JobDetailsPage = ({
               <div className="flex flex-shrink-0 items-center gap-2">
                 <Button
                   className="rounded-full px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  onClick={handleShare}
                   variant="outline"
                 >
                   <Share2 className="mr-2 h-4 w-4" /> Share job
@@ -209,7 +240,7 @@ const JobDetailsPage = ({
                 </a>
               </p>
             )}
-            <Link href="/companies/123">
+            <Link href={`/companies/${companyDocumentId}`}>
               <Button
                 className="w-full rounded-lg border-blue-600 py-2.5 text-blue-600 hover:bg-blue-50"
                 variant="outline"

@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 // Define the props type for the JobCard component
 type JobCardProps = {
-  id: string;
   timePosted: string;
   tags: string[]; // e.g., ["seniority"]
   companyLogoUrl?: string; // Optional URL for the company logo
@@ -15,6 +14,7 @@ type JobCardProps = {
   salaryRange: string; // e.g., "15 - 35 USD/hour"
   isRemote: boolean;
   jobType: string; // e.g., "Part-time"
+  documentId: string;
 };
 
 export const JobCard = ({
@@ -26,11 +26,12 @@ export const JobCard = ({
   salaryRange,
   isRemote,
   jobType,
+  documentId,
 }: JobCardProps) => {
   return (
     <Link
-      className="mx-auto mt-4 flex w-full max-w-5xl cursor-pointer flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-md transition-all ease-in-out hover:border-blue-500"
-      href="/jobs/123"
+      className="mx-auto flex w-full max-w-5xl cursor-pointer flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-md transition-all ease-in-out hover:border-blue-500"
+      href={`/jobs/${documentId}`}
     >
       {/* Top section: Time, Tags, Save Button */}
       <div className="flex items-start justify-between">

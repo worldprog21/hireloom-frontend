@@ -2,37 +2,9 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import type { CompanyOverviewPageProps } from '@/types/company';
 import { JobCard } from './JobCard';
 import { Button } from './ui/button';
-
-// Define the props type for the CompanyOverviewPage component
-type CompanyOverviewPageProps = {
-  companyLogoUrl?: string; // Optional URL for the company logo
-  companyName: string;
-  totalJobs: number; // Number of jobs available
-  overviewContent: {
-    about: string[]; // Array of paragraphs for "About Transamerica Financial Advisors"
-  };
-  jobs: JobCardProps[]; // Array of job objects, conforming to JobCardProps
-  sidebarDetails: {
-    companyWebsite?: string; // e.g., "tfaconnect.com/"
-  };
-};
-
-// Re-using the JobCardProps type from the JobCard component
-type JobCardProps = {
-  id: string;
-  timePosted: string;
-  tags: string[];
-  companyLogoUrl?: string;
-  jobTitle: string;
-  companyName: string;
-  salaryRange: string;
-  isQuickApply: boolean;
-  isRemote: boolean;
-  location: string;
-  jobType: string;
-};
 
 export const CompanyOverviewPage = ({
   companyLogoUrl,
