@@ -1,5 +1,8 @@
-import { BriefcaseIcon, UserIcon } from 'lucide-react';
+'use client';
+
+import { BriefcaseIcon, Unlock, UserIcon } from 'lucide-react';
 import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -9,6 +12,8 @@ import {
 } from './ui/dropdown-menu';
 
 export const Navbar = () => {
+  const { data: session, status } = useSession();
+
   return (
     <header className="fixed top-0 z-50 w-full border-b bg-[#FAFCFF] py-5">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 lg:px-0">
@@ -32,23 +37,39 @@ export const Navbar = () => {
             Jobs
           </Link>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                className="flex flex-col items-center gap-0 text-sm"
-                variant="ghost"
-              >
-                <UserIcon className="h-4 w-4" />
-                Me
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href="/settings">Settings</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {!session?.user && status !== 'loading' && (
+            <Link
+              className="flex flex-col items-center gap-0 font-medium text-sm hover:underline"
+              href="/login"
+            >
+              <Unlock className="h-4 w-4" />
+              Login
+            </Link>
+          )}
+
+          {session?.user && status === 'authenticated' && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  className="flex flex-col items-center gap-0 text-sm"
+                  variant="ghost"
+                >
+                  <UserIcon className="h-4 w-4" />
+                  Me
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href="/settings">Settings</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => signOut({ callbackUrl: '/login' })}
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </header>
