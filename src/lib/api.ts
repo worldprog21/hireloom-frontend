@@ -64,3 +64,35 @@ export async function fetchCompanyByDocId(documentId: string) {
   );
   return res.data;
 }
+
+export const createApplication = ({
+  resume,
+  interestReason,
+  skills,
+  job,
+  userId,
+  token,
+}: {
+  resume: string;
+  interestReason: string;
+  skills: string;
+  job: string;
+  userId: string;
+  token?: string;
+}) => {
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+  return axios.post(
+    `${API_URL}/api/applications`,
+    {
+      data: {
+        resume,
+        interestReason,
+        skills,
+        job,
+        user: userId,
+      },
+    },
+    { headers }
+  );
+};

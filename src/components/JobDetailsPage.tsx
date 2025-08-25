@@ -11,8 +11,10 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import ApplicationDialog from './ApplicationDialog';
 
 type JobDetailsPageProps = {
   documentId: string;
@@ -52,6 +54,8 @@ const JobDetailsPage = ({
   waysToWork,
   sidebarDetails,
 }: JobDetailsPageProps) => {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
   const jobUrl = `${window.location.origin}/jobs/${documentId}`;
 
   const handleShare = async () => {
@@ -79,6 +83,12 @@ const JobDetailsPage = ({
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8 font-sans">
+      <ApplicationDialog
+        jobDocId={documentId}
+        open={openDialog}
+        setOpen={setOpenDialog}
+      />
+
       <div className="container mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Main Content Area */}
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-md md:p-8 lg:col-span-2">
@@ -112,7 +122,10 @@ const JobDetailsPage = ({
                 >
                   <Share2 className="mr-2 h-4 w-4" /> Share job
                 </Button>
-                <Button className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+                <Button
+                  className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                  onClick={() => setOpenDialog(true)}
+                >
                   Apply <Zap className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -202,7 +215,10 @@ const JobDetailsPage = ({
                 {sidebarDetails.publishedDate}
               </li>
             </ul>
-            <Button className="mt-6 w-full rounded-lg bg-blue-600 py-2.5 text-white hover:bg-blue-700">
+            <Button
+              className="mt-6 w-full rounded-lg bg-blue-600 py-2.5 text-white hover:bg-blue-700"
+              onClick={() => setOpenDialog(true)}
+            >
               Apply <Zap className="ml-2 h-4 w-4" />
             </Button>
           </div>
