@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import ApplicationDialog from './ApplicationDialog';
 
 type JobDetailsPageProps = {
@@ -39,6 +40,7 @@ type JobDetailsPageProps = {
     publishedDate: string; // e.g., "Jul 19, 2025"
     companyWebsite?: string; // e.g., "tfaconnect.com/"
   };
+  jobApplication?: any;
 };
 
 const JobDetailsPage = ({
@@ -53,6 +55,7 @@ const JobDetailsPage = ({
   whatWeDo,
   waysToWork,
   sidebarDetails,
+  jobApplication,
 }: JobDetailsPageProps) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -123,10 +126,20 @@ const JobDetailsPage = ({
                   <Share2 className="mr-2 h-4 w-4" /> Share job
                 </Button>
                 <Button
-                  className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                  className={cn(
+                    'rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700',
+                    jobApplication?.applicationStatus === 'Accepted' &&
+                      'bg-green-600 hover:bg-green-700',
+                    jobApplication?.applicationStatus === 'Rejected' &&
+                      'bg-red-600 hover:bg-red-700'
+                  )}
+                  disabled={jobApplication}
                   onClick={() => setOpenDialog(true)}
                 >
-                  Apply <Zap className="ml-2 h-4 w-4" />
+                  {jobApplication
+                    ? `Already applied (${jobApplication?.applicationStatus})`
+                    : 'Apply'}{' '}
+                  <Zap className="ml-2 h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -216,10 +229,20 @@ const JobDetailsPage = ({
               </li>
             </ul>
             <Button
-              className="mt-6 w-full rounded-lg bg-blue-600 py-2.5 text-white hover:bg-blue-700"
+              className={cn(
+                'mt-6 w-full rounded-lg bg-blue-600 py-2.5 text-white hover:bg-blue-700',
+                jobApplication?.applicationStatus === 'Accepted' &&
+                  'bg-green-600 hover:bg-green-700',
+                jobApplication?.applicationStatus === 'Rejected' &&
+                  'bg-red-600 hover:bg-red-700'
+              )}
+              disabled={jobApplication}
               onClick={() => setOpenDialog(true)}
             >
-              Apply <Zap className="ml-2 h-4 w-4" />
+              {jobApplication
+                ? `Already applied (${jobApplication?.applicationStatus})`
+                : 'Apply'}{' '}
+              <Zap className="ml-2 h-4 w-4" />
             </Button>
           </div>
 

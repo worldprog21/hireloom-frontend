@@ -96,3 +96,13 @@ export const createApplication = ({
     { headers }
   );
 };
+
+export async function fetchApplicationStatus(jobDocId: string, session: any) {
+  const headers = session ? { Authorization: `Bearer ${session?.jwt}` } : {};
+
+  const res = await axios.get(
+    `${API_URL}/api/applications?filters[job][documentId][$eq]=${jobDocId}&filters[user][id][$eq]=${session?.user?.id}`,
+    { headers }
+  );
+  return res.data;
+}

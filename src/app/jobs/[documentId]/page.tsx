@@ -2,14 +2,21 @@
 
 import moment from 'moment';
 import { useParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import JobDetailsPage from '@/components/JobDetailsPage';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useApplicationStatus } from '@/hooks/useApplication';
 import { useJob } from '@/hooks/useJobs';
 import type { Job } from '@/types/job';
 
 const JobDetails = () => {
   const { documentId } = useParams();
+  const { data: session }: any = useSession();
   const { data, isLoading, error } = useJob(documentId as string);
+  const { data: jobApplication } = useApplicationStatus(
+    documentId as string,
+    session
+  );
 
   if (isLoading) {
     return (
@@ -59,6 +66,7 @@ const JobDetails = () => {
       publishedDate: moment(job?.createdAt).format('MMM D, YYYY'),
       companyWebsite: job?.company?.companyWebsite,
     },
+    jobApplication: jobApplication?.data?.[0],
   };
 
   return <JobDetailsPage {...exampleJobDetails} />;

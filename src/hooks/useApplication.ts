@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
-import { createApplication } from '@/lib/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { createApplication, fetchApplicationStatus } from '@/lib/api';
 
 export const useCreateApplication = () => {
   return useMutation({
@@ -23,3 +23,11 @@ export const useCreateApplication = () => {
     },
   });
 };
+
+export function useApplicationStatus(jobDocId: string, session: any) {
+  return useQuery({
+    queryKey: ['application', jobDocId, session],
+    queryFn: () => fetchApplicationStatus(jobDocId, session),
+    staleTime: 0, // disable caching
+  });
+}
