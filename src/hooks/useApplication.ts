@@ -1,5 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { createApplication, fetchApplicationStatus } from '@/lib/api';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  createApplication,
+  fetchApplicationStatus,
+  fetchJobsApplied,
+} from '@/lib/api';
 
 export const useCreateApplication = () => {
   return useMutation({
@@ -29,5 +33,31 @@ export function useApplicationStatus(jobDocId: string, session: any) {
     queryKey: ['application', jobDocId, session],
     queryFn: () => fetchApplicationStatus(jobDocId, session),
     staleTime: 0, // disable caching
+  });
+}
+
+export function useJobseApplied(
+  token: string,
+  userId: number,
+  applicationStatus: string
+) {
+  return useInfiniteQuery({
+    queryKey: ['jobs-applied', token, userId],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchJobsApplied({
+        page: pageParam,
+        pageSize: 2,
+        token,
+        userId,
+        applicationStatus,
+      }),
+    getNextPageParam: (lastPage) => {
+      const { page, pageCount } = lastPage.meta.pagination;
+      if (page < pageCount) {
+        return page + 1;
+      }
+      return;
+    },
+    initialPageParam: 1,
   });
 }
