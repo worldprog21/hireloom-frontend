@@ -7,7 +7,7 @@ import { JobCard } from '@/components/JobCard';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useJobseApplied } from '@/hooks/useApplication';
+import { useJobseApplied } from '@/hooks/queries/useApplication';
 import type { Application } from '@/types/application';
 
 const JobsAppliedPage = () => {

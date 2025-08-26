@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useUpdateUserDetails } from '@/hooks/useUserDetails';
+import { useUpdateUserDetails } from '@/hooks/queries/useUserDetails';
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: 'First name is required.' }),

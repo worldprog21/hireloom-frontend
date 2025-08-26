@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchCompanyByDocId } from '@/lib/api';
+import { fetchCompanyByDocId } from '@/services/company-services';
 
 export function useCompany(documentId: string) {
   return useQuery({

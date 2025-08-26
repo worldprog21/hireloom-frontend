@@ -5,8 +5,8 @@ import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import JobDetailsPage from '@/components/JobDetailsPage';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useApplicationStatus } from '@/hooks/useApplication';
-import { useJob } from '@/hooks/useJobs';
+import { useApplicationStatus } from '@/hooks/queries/useApplication';
+import { useJob } from '@/hooks/queries/useJobs';
 import type { Job } from '@/types/job';
 
 const JobDetails = () => {

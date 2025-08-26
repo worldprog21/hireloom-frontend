@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useParams } from 'next/navigation';
 import { CompanyOverviewPage } from '@/components/CompanyOverviewPage';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useCompany } from '@/hooks/useCompany';
+import { useCompany } from '@/hooks/queries/useCompany';
 import type { Company, CompanyOverviewPageProps } from '@/types/company';
 
 const CompanyPage = () => {

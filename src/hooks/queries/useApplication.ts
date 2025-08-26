@@ -3,7 +3,7 @@ import {
   createApplication,
   fetchApplicationStatus,
   fetchJobsApplied,
-} from '@/lib/api';
+} from '@/services/applications-services';
 
 export const useCreateApplication = () => {
   return useMutation({

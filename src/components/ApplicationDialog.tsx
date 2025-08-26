@@ -15,7 +15,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useCreateApplication } from '@/hooks/useApplication';
+import { useCreateApplication } from '@/hooks/queries/useApplication';
 import { Button } from './ui/button';
 import { DialogHeader } from './ui/dialog';
 import {
