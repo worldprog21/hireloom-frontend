@@ -63,7 +63,7 @@ export const Navbar = () => {
                   <Link href="/settings">Settings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/job-applied">Jobs Applied</Link>
+                  <Link href="/jobs/applied">Jobs Applied</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => signOut({ callbackUrl: '/login' })}
