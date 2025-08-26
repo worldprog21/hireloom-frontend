@@ -49,6 +49,7 @@ const handler = NextAuth({
           name: fullUser.username,
           email: fullUser.email,
           jwt: data.jwt,
+          userDetailDocId: fullUser.user_detail?.documentId || null,
           firstName: fullUser.user_detail?.firstName || null,
           lastName: fullUser.user_detail?.lastName || null,
           resume: fullUser?.user_detail?.resume || null,
@@ -57,19 +58,29 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         token.jwt = user.jwt;
         token.id = user.id;
+        token.userDetailDocId = user.userDetailDocId;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.resume = user.resume;
       }
+
+      // handle manual session.update()
+      if (trigger === 'update' && session) {
+        token.firstName = session.firstName ?? token.firstName;
+        token.lastName = session.lastName ?? token.lastName;
+        token.resume = session.resume ?? token.resume;
+      }
+
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id;
       session.jwt = token.jwt;
+      session.user.userDetailDocId = token.userDetailDocId;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
       session.user.resume = token.resume;

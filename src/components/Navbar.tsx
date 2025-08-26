@@ -12,7 +12,7 @@ import {
 } from './ui/dropdown-menu';
 
 export const Navbar = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status }: any = useSession();
 
   return (
     <header className="fixed top-0 z-50 w-full border-b bg-[#FAFCFF] py-5">
@@ -55,12 +55,15 @@ export const Navbar = () => {
                   variant="ghost"
                 >
                   <UserIcon className="h-4 w-4" />
-                  Me
+                  Hello, {session?.user?.firstName}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
                   <Link href="/settings">Settings</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/job-applied">Jobs Applied</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => signOut({ callbackUrl: '/login' })}
