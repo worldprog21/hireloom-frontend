@@ -7,6 +7,7 @@ import {
   DollarSign,
   MapPin,
   Share2,
+  Sparkles,
   Zap,
 } from 'lucide-react';
 import Image from 'next/image';
@@ -15,6 +16,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import AIAnalyzerDialog from './AIAnalyzerDialog';
 import ApplicationDialog from './ApplicationDialog';
 
 type JobDetailsPageProps = {
@@ -58,6 +60,7 @@ const JobDetailsPage = ({
   jobApplication,
 }: JobDetailsPageProps) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openAnalyzerDialog, setOpenAnalyzerDialog] = useState<boolean>(false);
 
   const jobUrl = `${window.location.origin}/jobs/${documentId}`;
 
@@ -92,6 +95,17 @@ const JobDetailsPage = ({
         setOpen={setOpenDialog}
       />
 
+      <AIAnalyzerDialog
+        aboutRole={aboutRole}
+        benefits={benefits}
+        jobAttributes={jobAttributes}
+        jobTitle={jobTitle}
+        open={openAnalyzerDialog}
+        setOpen={setOpenAnalyzerDialog}
+        waysToWork={waysToWork}
+        whatWeDo={whatWeDo}
+      />
+
       <div className="container mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Main Content Area */}
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-md md:p-8 lg:col-span-2">
@@ -117,9 +131,9 @@ const JobDetailsPage = ({
                 </h1>
                 <p className="text-base text-gray-600">{companyName}</p>
               </div>
-              <div className="flex flex-shrink-0 items-center gap-2">
+              <div className="flex flex-shrink-0 flex-col items-center gap-2 md:flex-row">
                 <Button
-                  className="rounded-full px-4 py-2 text-gray-700 hover:bg-gray-50"
+                  className="w-full rounded-full px-4 py-2 text-gray-700 hover:bg-gray-50 md:w-fit"
                   onClick={handleShare}
                   variant="outline"
                 >
@@ -127,7 +141,7 @@ const JobDetailsPage = ({
                 </Button>
                 <Button
                   className={cn(
-                    'rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700',
+                    'w-full rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 md:w-fit',
                     jobApplication?.applicationStatus === 'Accepted' &&
                       'bg-green-600 hover:bg-green-700',
                     jobApplication?.applicationStatus === 'Rejected' &&
@@ -140,6 +154,14 @@ const JobDetailsPage = ({
                     ? `Already applied (${jobApplication?.applicationStatus})`
                     : 'Apply'}{' '}
                   <Zap className="ml-2 h-4 w-4" />
+                </Button>
+
+                <Button
+                  className="w-full rounded-full px-4 py-2 md:w-fit"
+                  onClick={() => setOpenAnalyzerDialog(true)}
+                >
+                  AI Analyzer
+                  <Sparkles className="ml-2 h-4 w-4" />
                 </Button>
               </div>
             </div>

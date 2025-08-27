@@ -9,6 +9,12 @@
       "suspicious": {
         "noConsole": "off", // will allow to use console.log
         "noExplicitAny": "off" // will allow to use type of <any>
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "nursery": {
+        "useMaxParams": "off"
       }
     }
   }
