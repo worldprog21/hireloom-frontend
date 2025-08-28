@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         port: '1337',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'hireloom-backend.onrender.com',
+        pathname: '/**',
+      },
     ],
   },
 };
